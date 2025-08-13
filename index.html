@@ -3,123 +3,351 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindfulMuslim - Apps for a Mindful Life</title>
+    <title>MindfulMuslim - Crafting Apps for a Mindful Life</title>
+    
+    <!-- Font Import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg-color: #1a1a2e;
-            --text-color: #e0e0e0;
-            --accent-color: #00bcd4; /* A vibrant cyan */
-            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            --font-size: 1.1rem;
-            --padding-base: 2rem;
-            --border-radius: 8px;
+            --bg-color: #02040a;
+            --primary-glow: radial-gradient(circle at 25% 30%, #1d3a5e, #02040a 45%);
+            --secondary-glow: radial-gradient(circle at 75% 70%, #2a2a4e, #02040a 45%);
+            --text-primary: #e6f1ff;
+            --text-secondary: #a8b2d1;
+            --accent-color: #57b6f6;
+            --card-bg: rgba(16, 23, 42, 0.55);
+            --card-border: rgba(136, 162, 201, 0.2);
+            --card-shadow: 0 8px 32px 0 rgba(2, 4, 10, 0.37);
+            --font-family: 'Inter', sans-serif;
+            --transition-speed: 0.4s;
+        }
+
+        /* --- Base & Reset --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: var(--font-family);
             background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
             display: flex;
             flex-direction: column;
-            align-items: center;
             min-height: 100vh;
         }
 
-        header, main, footer {
+        /* --- Animated Aurora Background --- */
+        .background-aurora {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 800px;
-            padding: var(--padding-base);
-            box-sizing: border-box;
-            text-align: center;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .background-aurora::before,
+        .background-aurora::after {
+            content: '';
+            position: absolute;
+            width: 150vw;
+            height: 150vh;
+            background-size: 100% 100%;
+            animation: pan-aurora 45s linear infinite alternate;
+            will-change: transform;
+        }
+        .background-aurora::before {
+            background-image: var(--primary-glow);
+            animation-direction: alternate-reverse;
+            top: -25%; left: -25%;
+        }
+        .background-aurora::after {
+            background-image: var(--secondary-glow);
+            opacity: 0.7;
+            top: -25%; left: -25%;
         }
 
-        header h1 {
-            color: var(--accent-color);
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+        @keyframes pan-aurora {
+            from { transform: rotate(0deg) scale(1); }
+            to { transform: rotate(20deg) scale(1.3); }
+        }
+
+        /* --- Main Layout & Containers --- */
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
         }
 
         main {
             flex-grow: 1;
+            padding: 4rem 0;
         }
 
-        .section {
-            background-color: #22223a;
-            padding: var(--padding-base);
-            margin-bottom: var(--padding-base);
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            text-align: left;
+        /* --- Header & Navigation --- */
+        .header-container {
+            position: sticky;
+            top: 1.5rem; /* This creates the space above the button */
+            z-index: 100;
+            padding: 0 1.5rem;
+            animation: fade-down 1s ease-out;
         }
 
-        .section h2 {
+        header {
+            max-width: 1100px;
+            margin: 0 auto; /* Center the header */
+            padding: 1rem 2rem; /* Internal padding */
+            border-radius: 9999px; /* Pill shape */
+            background: rgba(16, 23, 42, 0.65);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: var(--card-shadow);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.75rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -1.5px;
+            transition: transform var(--transition-speed) ease;
+        }
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        .logo span {
             color: var(--accent-color);
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 0.5rem;
-            margin-top: 0;
-            text-align: center;
         }
 
-        .app-link {
+        /* --- CTA Button --- */
+        .btn {
             display: inline-block;
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            font-weight: bold;
-            text-decoration: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--border-radius);
-            transition: background-color 0.3s ease;
-        }
-
-        .app-link:hover {
-            background-color: #00a4b8;
-        }
-
-        footer {
-            padding: var(--padding-base);
-            border-top: 1px solid #333;
-            text-align: center;
+            background: var(--accent-color);
+            color: #0A192F;
+            font-weight: 700;
             font-size: 0.9rem;
+            padding: 0.75rem 1.75rem;
+            border-radius: 50px;
+            text-decoration: none;
+            border: 2px solid transparent;
+            text-align: center;
+            transition: all var(--transition-speed) cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 4px 15px rgba(87, 182, 246, 0.2);
+        }
+        .btn:hover {
+            background: transparent;
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(87, 182, 246, 0.3);
         }
 
+        /* --- Hero Section --- */
+        .hero {
+            text-align: center;
+            padding: 8rem 0 6rem 0; /* Increased top padding to account for header */
+        }
+        .hero h1 {
+            font-size: clamp(2.8rem, 6vw, 4.8rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, #ffffff, #c2d4ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fade-up 1s ease-out 0.2s backwards;
+        }
+        .hero p {
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            animation: fade-up 1s ease-out 0.4s backwards;
+        }
+        .hero .btn {
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            animation: fade-up 1s ease-out 0.6s backwards;
+        }
+
+        /* --- Grid & Cards --- */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: var(--card-shadow);
+            transition: all var(--transition-speed) ease;
+            transform: translateY(0);
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(87, 182, 246, 0.4);
+            box-shadow: 0 16px 40px rgba(2, 4, 10, 0.5);
+        }
+        .card h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        .card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            flex-grow: 1;
+        }
+        .card .btn-container {
+            margin-top: 2rem;
+        }
+
+        /* --- Scroll Animations --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 5rem;
+            border-top: 1px solid var(--card-border);
+        }
         footer a {
-            color: var(--text-color);
+            color: var(--text-primary);
             text-decoration: none;
+            font-weight: 500;
+            transition: color var(--transition-speed) ease;
+        }
+        footer a:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- Keyframe Animations --- */
+        @keyframes fade-down {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Media Queries --- */
+        @media (max-width: 768px) {
+            .hero { padding-top: 6rem; }
+            header { padding: 0.8rem 1.5rem; }
+            .header-container { top: 1rem; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>MindfulMuslim</h1>
-        <p>Your companion for productivity and `īmān`.</p>
-    </header>
 
-    <main>
-        <section class="section">
-            <h2>Our Mission</h2>
-            <p>Our mission is to build apps that help Muslims integrate their faith seamlessly with their daily lives. We focus on creating tools that enhance productivity, focus, and spiritual growth using a blend of technology and Islamic principles.</p>
+    <div class="background-aurora"></div>
+
+    <div class="header-container">
+        <header>
+            <nav>
+                <a href="#" class="logo">Mindful<span>Muslim</span></a>
+                <a href="https://github.com/nafiznnk" class="btn" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </nav>
+        </header>
+    </div>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Crafting Apps for a Mindful Life</h1>
+            <p>We blend technology and Islamic principles to create tools that enhance productivity, focus, and spiritual growth. Explore our work below.</p>
+            <a href="https://play.google.com/store/apps/details?id=com.mindfulmuslim.dhikrullah" class="btn" target="_blank" rel="noopener noreferrer">Download Our First App</a>
         </section>
 
-        <section class="section">
-            <h2>Featured App: Tasbeeh Counter & App Blocker</h2>
-            <p>This is our flagship application designed to help you maintain your daily `dhikr` while minimizing distractions from other apps. It's built with modern technology (Kotlin & Jetpack Compose) to provide a smooth and beautiful user experience.</p>
-            <p>Download it now on the Google Play Store:</p>
-            <p style="text-align: center;"><a href="https://play.google.com/store/apps/details?id=com.mindfulmuslim.dhikrullah" class="app-link">Get the App on Play Store</a></p>
-        </section>
+        <div class="content-grid">
+            <div class="card reveal">
+                <h2>Our Mission</h2>
+                <p>To empower Muslims by integrating their faith into their daily routines. We believe technology can be a powerful ally, and we build elegantly designed, intuitive tools that are not just functional but a joy to use.</p>
+            </div>
 
-        <section class="section">
-            <h2>Stay Connected</h2>
-            <p>Follow our journey and get updates on new app releases and projects. You can find us on GitHub:</p>
-            <p style="text-align: center;"><a href="https://github.com/nafiznnk" class="app-link">Visit Our GitHub</a></p>
-        </section>
+            <div class="card reveal">
+                <h2>Featured App</h2>
+                <p>Our flagship "Tasbeeh Counter & App Blocker" helps you maintain dhikr and focus. It combines a beautiful tasbeeh counter with a smart app blocker to minimize distractions, all built with a smooth, native experience.</p>
+                <div class="btn-container">
+                    <a href="https://play.google.com/store/apps/details?id=com.mindfulmuslim.dhikrullah" class="btn" target="_blank" rel="noopener noreferrer">Get on Play Store</a>
+                </div>
+            </div>
+
+            <div class="card reveal">
+                <h2>Developer Profile</h2>
+                <p>MindfulMuslim is our dedicated developer profile on the Google Play Store. We are committed to creating high-quality, purposeful applications. Follow our journey and see what we build next.</p>
+                <div class="btn-container">
+                    <a href="https://play.google.com/store/apps/dev?id=7492519088939699730" class="btn" target="_blank" rel="noopener noreferrer">Visit Play Store Page</a>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer>
-        <p>&copy; 2025 MindfulMuslim. All rights reserved.</p>
-        <p>This page serves as the official developer website for AdMob verification. <a href="/app-ads.txt">app-ads.txt</a></p>
+        <div class="container">
+            <p>&copy; 2025 MindfulMuslim. All rights reserved.</p>
+        </div>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.transitionDelay = `${index * 150}ms`;
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { 
+                threshold: 0.1 
+            });
+
+            document.querySelectorAll('.reveal').forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
 </body>
 </html>
